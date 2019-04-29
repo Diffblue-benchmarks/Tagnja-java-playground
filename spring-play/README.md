@@ -4,6 +4,7 @@
 
 <h3 id="content">Content</h3>
 
+- About Dependency
 - Spring Core
   - IOC
     - [spring-ioc-by-xml](#sibx)
@@ -12,7 +13,6 @@
     - [spring-ioc-inject-dependency](#siid)
     - [spring-ioc-with-servlet-startup](#siwss)
   - AOP
-
 - Web Application
   - Spring MVC
   - REST APIs
@@ -36,6 +36,18 @@
 ---
 
 ### Main
+
+### About Dependency
+
+Description of modules
+
+- `spring-beans`, `spring-core`, `spring-context` is the most important dependencies in spring. It accomplish the IOC function.
+
+Usage
+
+- the `spring-context` dependency contains `spring-beans` , `spring-core `. Just add the one dependency in your `pom.xml` when you using IOC.
+
+- the `spring-web` dependency when you are developing a web application.
 
 <h3 id="sibx">Spring IOC by xml</h3>
 
@@ -277,9 +289,9 @@ Steps of this play
 
     Idea -- menu bar -- File -- New -- Project -- Select Maven in left of new window -- Create from archietype -- Select org.apache.maven.archetypes:maven-archetype-webapp -- Next -- fill your GroupId, Artifactid -- Next -- Maven home directory don't care, just click Next -- Fill your project name -- Finish.
 
-- Adding dependencies. Such as `javax.servlet-api `, `spring-web`
+- Adding dependencies. Such as `javax.servlet-api `, `spring-context`, `spring-web`.
 
-	```xml
+  ```xml
     <properties>
         <spring.version>5.1.5.RELEASE</spring.version>
     </properties>
@@ -292,11 +304,16 @@ Steps of this play
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>${spring.version}</version>
         </dependency>
     </dependencies>
-	```
+  ```
 
 - Writing a servlet class file.
   MyServlet.java
@@ -354,12 +371,62 @@ Steps of this play
 
   example http://localhost:8080/MyServlet
 
-- Creating your bean
+- Creating your bean.
+
+    MyBean.java
+
+    ```java
+    public class MyBean
+    {
+        private String name;
+        public MyBean() {}
+        public MyBean(String name)
+        {
+            this.name = name;
+        }
+        public void sayHello()
+        {
+            System.out.println("hello by " + name);
+        }
+    }
+    ```
 
 - Creating a bean configuration file. 
 
-  ApplicationConext.xml
+  applicationConext.xml
   
+  ```xml
+  <bean id="MyBean" class="com.taogen.springiocwithservlet.bean.MyBean">
+      <constructor-arg value="My Bean 1"></constructor-arg>
+  </bean>
+  ```
+  
+- Creating Main.java to test Spring IOC 
+
+    Main.java
+
+    ```java
+    public static void main (String[] args)
+    {
+        BeanFactory beanFactory = new ClassPathXmlApplicationContext("applicationContext.xml");
+        MyBean myBean = (MyBean) beanFactory.getBean("MyBean");
+        myBean.sayHello();
+    }
+    ```
+
+- add contextLoaderListener in `web.xml`.  **When servlet application running, the spring ioc will instantiated？**
+
+    ```xml
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>
+    
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    ```
+
 - Using Spring bean in Servlet
 
 TODO...
