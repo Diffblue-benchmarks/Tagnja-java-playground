@@ -10,9 +10,12 @@
     - [spring-ioc-by-xml](#sibx)
     - [spring-ioc-by-annotation](#siba)
     - [spring-ioc-by-java](#sibj)
-    - [spring-ioc-by-xml-with-servlet-startup](#siwss)
-  - Spring IOC Inject Dependencies
-    - [spring-ioc-inject-dependencies](#siid)
+    - [spring-ioc-by-xml-with-servlet-startup](#sibxwss)
+    - [spring-ioc-by-anno-with-servlet-startup](#sibawss)
+  - Spring IOC Dependency Injection
+    - [spring-ioc-di-by-xml](#sidbx)
+    - [spring-ioc-di-by-annotation](#sidba)
+    - [spring-ioc-di-by-java](#sidbj)
   - AOP
 - Web Application
   - Spring MVC
@@ -188,7 +191,7 @@ Steps with this play
            xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans.xsd
            http://www.springframework.org/schema/context
-           http://www.springframework.org/schema/beans/spring-context.xsd">
+           http://www.springframework.org/schema/context/spring-context.xsd">
 
         <context:component-scan base-package="com.taogen.springiocbyannotation">
         </context:component-scan>
@@ -208,11 +211,21 @@ Steps with this play
     ```java
         public static void main(String[] args)
         {
+            // method 1
             AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
             ctx.register(MyBean.class);
             ctx.refresh();
-            MyBean myBean = (MyBean) ctx.getBean("MyBean");
+            MyBean myBean = (MyBean) ctx.getBean(MyBean.class);
             myBean.sayHello();
+            
+            // method 2 and 3
+            BeanFactory beanFactory = new ClassPathXmlApplicationContext("applicationContext.xml");
+            MyBean myBean1 = (MyBean) beanFactory.getBean("MyBean1"); // @Component(value = "MyBean1")
+            myBean1.sayHello();
+    
+            MyBean myBean2 = (MyBean) beanFactory.getBean(MyBean.class);
+            myBean2.sayHello();
+    
         }
     ```
 
@@ -275,7 +288,7 @@ Steps with this play
 
 
 
-<h3 id="siwss">Spring IOC by XML with Servlet Startup</h3>
+<h3 id="sibxwss">Spring IOC by XML with Servlet Startup</h3>
 
 Steps of this play
 
@@ -438,9 +451,8 @@ Steps of this play
 
 ---
 
-### Spring IOC Inject Dependencies
 
-<h3 id="siid">Spring IOC Inject Dependencies</h3>
+<h3 id="sibawss">spring IOC by Annotation with Servlet Startup</h3>
 
 
 
@@ -448,5 +460,31 @@ Steps of this play
 
 ---
 
+
+### Spring IOC Dependency Injection
+
+<h3 id="sidbx">Spring IOC DI by XML</h3>
+
+
+
+[`back to content`](#content)
+
+---
+
+<h3 id="sidba">Spring IOC DI by Annotation</h3>
+
+
+
+[`back to content`](#content)
+
+---
+
+<h3 id="sidbj">Spring IOC DI by Java</h3>
+
+
+
+[`back to content`](#content)
+
+---
 
 --END--
