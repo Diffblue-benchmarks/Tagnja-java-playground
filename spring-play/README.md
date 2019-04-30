@@ -6,12 +6,13 @@
 
 - About Dependency
 - Spring Core
-  - IOC
+  - Spring IOC
     - [spring-ioc-by-xml](#sibx)
     - [spring-ioc-by-annotation](#siba)
     - [spring-ioc-by-java](#sibj)
-    - [spring-ioc-inject-dependency](#siid)
-    - [spring-ioc-with-servlet-startup](#siwss)
+    - [spring-ioc-by-xml-with-servlet-startup](#siwss)
+  - Spring IOC Inject Dependencies
+    - [spring-ioc-inject-dependencies](#siid)
   - AOP
 - Web Application
   - Spring MVC
@@ -49,6 +50,7 @@ Usage
 
 - the `spring-web` dependency when you are developing a web application.
 
+### Spring IOC
 <h3 id="sibx">Spring IOC by xml</h3>
 
 Steps with this play
@@ -272,16 +274,8 @@ Steps with this play
 ---
 
 
-<h3 id="siid">Spring IOC Inject Dependency</h3>
 
-
-
-[`back to content`](#content)
-
----
-
-
-<h3 id="siwss">Spring IOC with Servlet Startup</h3>
+<h3 id="siwss">Spring IOC by XML with Servlet Startup</h3>
 
 Steps of this play
 
@@ -414,7 +408,7 @@ Steps of this play
     }
     ```
 
-- add contextLoaderListener in `web.xml`.  **When servlet application running, the spring ioc will instantiated？**
+- add contextLoaderListener in `web.xml`.  **When servlet application running, the spring ioc will instantiated**
 
     ```xml
     <context-param>
@@ -427,11 +421,16 @@ Steps of this play
     </listener>
     ```
 
-- Using Spring bean in Servlet
+- Using Spring bean in Servlet by org.springframework.web.context.support.WebApplicationContextUtils
 
-TODO...
-
-
+    ```java
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+    {
+        ApplicationContext beanFactory = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+        MyBean myBean = (MyBean) beanFactory.getBean("MyBean", MyBean.class);
+        myBean.sayHello();
+    }
+    ```
 
 
 
@@ -439,6 +438,15 @@ TODO...
 
 ---
 
+### Spring IOC Inject Dependencies
+
+<h3 id="siid">Spring IOC Inject Dependencies</h3>
+
+
+
+[`back to content`](#content)
+
+---
 
 
 --END--
