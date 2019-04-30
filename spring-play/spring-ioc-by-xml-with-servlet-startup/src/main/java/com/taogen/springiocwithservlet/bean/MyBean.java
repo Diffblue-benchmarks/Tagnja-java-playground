@@ -8,8 +8,9 @@ public class MyBean
     {
         this.name = name;
     }
-    public void sayHello()
+    public String sayHello()
     {
         System.out.println("hello by " + name);
+        return "hello by " + name;
     }
 }
