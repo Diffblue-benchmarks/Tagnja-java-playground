@@ -12,10 +12,7 @@
     - [spring-ioc-by-java](#sibj)
     - [spring-ioc-by-xml-with-servlet-startup](#sibxwss)
     - [spring-ioc-by-anno-with-servlet-startup](#sibawss)
-  - Spring IOC Dependency Injection
-    - [spring-ioc-di-by-xml](#sidbx)
-    - [spring-ioc-di-by-annotation](#sidba)
-    - [spring-ioc-di-by-java](#sidbj)
+    - [spring-ioc-di](#sid)
   - AOP
 - Web Application
   - Spring MVC
@@ -268,7 +265,7 @@ Steps with this play
 	applicationContext.xml
 
     ```xml
-    <context:component-scan base-package="com.taogen.springiocbyjava"></context:component-scan>
+  <context:component-scan base-package="com.taogen.springiocbyjava"></context:component-scan>
     ```
 
 - Writing Main class to test. Get bean by AnnotationConfigApplicationContext Object.
@@ -356,7 +353,7 @@ Steps of this play
     </servlet-mapping>
   ```
 
-- Deploying and Running Servlet with tomcat
+- Running Servlet with tomcat
 
   (1) Running maven package
 
@@ -454,34 +451,231 @@ Steps of this play
 
 <h3 id="sibawss">spring IOC by Annotation with Servlet Startup</h3>
 
+This play simple steps. More details you can refer "spring IOC by XML with Servlet Startup".
 
+- Creating a new webapp maven project.
+
+- Adding dependencies.
+
+- Writing a servlet class file.
+
+- Configuring servlet map in web.xml
+
+- Running Servlet with tomcat
+
+- Creating your bean with annotation @Component.
+
+  ```java
+  @Component(value = "MyBean1")
+  public class MyBean
+  {
+      private String name;
+      public MyBean() {}
+      public MyBean(String name)
+      {
+          this.name = name;
+      }
+      public String sayHello()
+      {
+          System.out.println("hello by " + name);
+          return "hello by " + name;
+      }
+  }
+  ```
+
+- Creating a bean configuration file.
+
+  applicationConext.xml
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:context="http://www.springframework.org/schema/context"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+      <context:component-scan base-package="com.taogen.springiocwithservlet.bean" />
+  </beans>
+  ```
+
+- Creating Main.java to test Spring IOC 
+
+  Main.java
+
+  ```java
+  BeanFactory beanFactory = new ClassPathXmlApplicationContext("applicationContext.xml");
+  MyBean myBean1 = (MyBean) beanFactory.getBean("MyBean1");
+  myBean1.sayHello();
+  ```
+
+- add contextLoaderListener in `web.xml`.  **When servlet application running, the spring ioc will instantiated**.
+
+- Using Spring bean in Servlet by org.springframework.web.context.support.WebApplicationContextUtils.
 
 [`back to content`](#content)
 
 ---
 
+<h3 id="sid">Spring IOC Dependency Injection</h3>
 
-### Spring IOC Dependency Injection
+- Spring IOC DI by XML. Using ref.
 
-<h3 id="sidbx">Spring IOC DI by XML</h3>
+- Spring IOC DI by Annotation. Using @autowired.
 
+- Spring IOC DI by Java. Using setter.
 
+This play steps. 
 
-[`back to content`](#content)
+- Creating new maven project.
 
----
+- Add dependencies in pom.xml.
 
-<h3 id="sidba">Spring IOC DI by Annotation</h3>
+  pom.xml
 
+  ```xml
+  <properties>
+  	<spring.version>5.1.5.RELEASE</spring.version>
+  </properties>
+  <dependencies>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+  </dependencies>
+  ```
 
+- Creating your bean java class.
 
-[`back to content`](#content)
+  MyXmlBean.java and MyJavaBean.java
 
----
+  ```java
+  public class MyXmlBean implements AbstractBean
+  {
+      private String name;
+      private MyInjectBean injectBean;
+      public String getName()
+      {
+          return name;
+      }
+      public void setName(String name)
+      {
+          this.name = name;
+      }
+  
+      public MyInjectBean getInjectBean()
+      {
+          return injectBean;
+      }
+  
+      public void setInjectBean(MyInjectBean injectBean)
+      {
+          this.injectBean = injectBean;
+      }
+      @Override
+      public String sayHello() {
+          String s = "Hello by " + this.name;
+          System.out.println(s);
+          injectBean.sayHello();
+          return s;
+      }
+  }
+  ```
 
-<h3 id="sidbj">Spring IOC DI by Java</h3>
+  MyAnnoBean.java
 
+  ```java
+  @Component
+  public class MyAnnoBean implements AbstractBean
+  {
+      @Value("AnnoBean1")
+      private String name;
+      @Autowired
+      private MyInjectBean injectBean;
+      @Override
+      public String sayHelo() {
+          String s = "Hello by " + this.name;
+          System.out.println(s);
+          injectBean.sayHelo();
+          return s;
+      }
+  }
+  ```
 
+  MyInjectBean.java
+
+  ```java
+  public class MyInjectBean implements AbstractBean
+  {
+      private String name;
+      public String getName() {
+          return name;
+      }
+      public void setName(String name) {
+          this.name = name;
+      }
+      public MyInjectBean(){}
+      public MyInjectBean(String name){this.name = name;}
+      @Override
+      public String sayHelo() {
+          String s = "I am Inject Bean. My name is " + this.name;
+          System.out.println(s);
+          return s;
+      }
+  }
+  ```
+
+- Creating spring bean configuration file. 
+
+  applicationContext.xml
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:context="http://www.springframework.org/schema/context"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+      <context:component-scan base-package="com.taogen.springiocdi.Bean"  />
+  
+      <bean id="MyXmlBean" class="com.taogen.springiocdi.Bean.MyXmlBean">
+          <property name="name" value="xmlBean1" />
+          <property name="injectBean" ref="MyInjectBean" />
+      </bean>
+  
+      <bean id="MyInjectBean" class="com.taogen.springiocdi.Bean.MyInjectBean">
+          <property name="name" value="injectBeanByXmlBean" />
+      </bean>
+  </beans>
+  ```
+
+- Creating Main class to test ioc.
+
+  Main.java
+
+  ```java
+  public static void main(String[] args)
+  {
+      ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+      MyXmlBean xmlBean = applicationContext.getBean(MyXmlBean.class);
+      xmlBean.sayHello();
+      MyAnnoBean annoBean = applicationContext.getBean(MyAnnoBean.class);
+      annoBean.sayHello();
+      MyJavaBean javaBean = applicationContext.getBean(MyJavaBean.class);
+      javaBean.sayHello();
+  }
+  /*
+  result:
+  Hello by xmlBean1
+  I am Inject Bean. My name is injectBeanByXmlBean
+  Hello by AnnoBean1
+  I am Inject Bean. My name is injectBeanByXmlBean
+  Hello by javaBean1
+  I am Inject Bean. My name is injectBeanByJavaBean
+  */
+  ```
+
+  
 
 [`back to content`](#content)
 
