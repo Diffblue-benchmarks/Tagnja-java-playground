@@ -593,7 +593,8 @@ This play steps.
       @Autowired
       private MyInjectBean injectBean;
       @Override
-      public String sayHelo() {
+      public String sayHelo() 
+      {
           String s = "Hello by " + this.name;
           System.out.println(s);
           injectBean.sayHelo();
@@ -647,6 +648,24 @@ This play steps.
           <property name="name" value="injectBeanByXmlBean" />
       </bean>
   </beans>
+  ```
+
+- Creating Spring Bean by Java.
+
+  AppConfig.java
+
+  ```java
+  @Configuration
+  public class AppConfig
+  {
+      @Bean
+      public MyJavaBean getMyJavaBean()
+      {
+          MyJavaBean javaBean = new MyJavaBean("javaBean1");
+          javaBean.setInjectBean(new MyInjectBean("injectBeanByJavaBean"));
+          return javaBean;
+      }
+  }
   ```
 
 - Creating Main class to test ioc.
