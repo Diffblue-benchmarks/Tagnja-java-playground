@@ -14,6 +14,8 @@
     - [spring-ioc-by-anno-with-servlet-startup](#sibawss)
     - [spring-ioc-di](#sid)
   - AOP
+    - [spring-aop-by-xml](#sabx)
+    - [spring-aop-by-annotation](#saba)
 - Web Application
   - Spring MVC
   - REST APIs
@@ -695,6 +697,135 @@ This play steps.
   ```
 
   
+
+[`back to content`](#content)
+
+---
+
+
+
+### Spring AOP
+
+<h3 id="sabx">Spring AOP By XML</h3>
+
+This play steps
+
+- Creating a new maven project. 
+
+- Adding dependencies `spring-context`, `aspectJ` in pom.xml
+
+  ```xml
+  <properties>
+  	<spring.version>5.1.5.RELEASE</spring.version>
+  </properties>
+  <dependencies>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.aspectj</groupId>
+          <artifactId>aspectjweaver</artifactId>
+          <version>1.9.3</version>
+      </dependency>
+  </dependencies>
+  ```
+
+- Creating Aspect Java Class.
+
+  Logging.java
+
+  ```java
+  public class Logging
+  {
+      public void beforeAdvice()
+      {
+          System.out.println("before..");
+      }
+  
+      public void afterAdvice()
+      {
+          System.out.println("after..");
+      }
+  
+      public void afterReturnAdvice()
+      {
+          System.out.println("after return..");
+      }
+  
+      public void afterThrowingAdvice()
+      {
+          System.out.println("after throwing..");
+      }
+  }
+  ```
+
+- Creating My Target Bean Java Class.
+
+  MyBean
+
+  ```java
+  public class MyBean
+  {
+      public String sayHello()
+      {
+          System.out.println("sayHello()...");
+          return "sayHello";
+      }
+  }
+  ```
+
+- Creating Spring configuration xml file.
+
+  applicationContext.xml
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:aop = "http://www.springframework.org/schema/aop"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+      <bean id="logging" class="com.taogen.springaopbyxml.aspect.Logging" />
+      <bean id="myBean" class="com.taogen.springaopbyxml.bean.MyBean" />
+      <aop:config>
+          <aop:aspect id="log" ref="logging">
+              <aop:pointcut id="logMyBean" expression="execution(* com.taogen.springaopbyxml.bean.*.*(..))" />
+              <aop:before method="beforeAdvice" pointcut-ref="logMyBean" />
+              <aop:after method="afterAdvice" pointcut-ref="logMyBean" />
+              <aop:after-returning method="afterReturnAdvice" pointcut-ref="logMyBean" />
+              <aop:after-throwing method="afterThrowingAdvice" pointcut-ref="logMyBean" />
+          </aop:aspect>
+      </aop:config>
+  </beans>
+  ```
+
+- Creating Main Java Class to test Spring AOP.
+
+  Main.java
+
+  ```java
+  public static void main(String[] args)
+  {
+      BeanFactory beanFactory = new ClassPathXmlApplicationContext("applicationContext.xml");
+      MyBean myBean = beanFactory.getBean(MyBean.class);
+      myBean.sayHello();
+  }
+  /* 
+  Result:
+  before..
+  sayHello()...
+  after..
+  after return..
+  */
+  ```
+
+[`back to content`](#content)
+
+---
+
+<h3 id="saba">Spring AOP by Annotation</h3>
 
 [`back to content`](#content)
 
