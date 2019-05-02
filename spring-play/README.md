@@ -714,6 +714,8 @@ This play steps
 
 - Adding dependencies `spring-context`, `aspectJ` in pom.xml
 
+  pom.xml
+
   ```xml
   <properties>
   	<spring.version>5.1.5.RELEASE</spring.version>
@@ -826,6 +828,100 @@ This play steps
 ---
 
 <h3 id="saba">Spring AOP by Annotation</h3>
+
+This play steps
+
+- Creating a new maven project.
+
+- Adding dependencies `spring-context`, `aspectjweaver` in pom.xml
+
+  pom.xml refer spring aop by xml section.
+
+- Creating my aspect Java class with annotation `@Aspect`, `@Component`.
+
+  MyAspect.java
+
+  ```java
+  @Aspect
+  @Component
+  public class MyAspect
+  {
+      @Pointcut("execution(* com.taogen.springaopbyanno.bean.*.*(..))")
+      public void loggingMyBean() {}
+  
+      @Before("loggingMyBean()")
+      public void beforeAdvice()
+      {
+          System.out.println("Before..");
+      }
+      @After("loggingMyBean()")
+      public void afterAdvice()
+      {
+          System.out.println("After..");
+      }
+      @AfterReturning("loggingMyBean()")
+      public void afterReturnAdvice()
+      {
+          System.out.println("After return..");
+      }
+  }
+  ```
+
+- Creating my bean Java class with annotation `@Component`.
+
+  MyBean.java
+
+  ```java
+  @Component
+  public class MyBean
+  {
+      public String sayHello()
+      {
+          System.out.println("sayHello()...");
+          return "sayhello()";
+      }
+  }
+  ```
+
+- Creating Spring configuration file.
+
+  applicationContext.xml
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:context="http://www.springframework.org/schema/context"
+         xmlns:aop = "http://www.springframework.org/schema/aop"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+      <context:component-scan base-package="com.taogen.springaopbyanno"  />
+      <aop:aspectj-autoproxy/>
+  </beans>
+  ```
+
+- Creating Main java class to test spring AOP.
+
+  Main.java
+
+  ```java
+  public  static void main(String[] args)
+  {
+      BeanFactory beanFactory = new ClassPathXmlApplicationContext("applicationContext.xml");
+      MyBean myBean = beanFactory.getBean(MyBean.class);
+      myBean.sayHello();
+  }
+  /* 
+  Result:
+  Before..
+  sayHello()...
+  After..
+  After return..
+  */
+  ```
+
+  
 
 [`back to content`](#content)
 

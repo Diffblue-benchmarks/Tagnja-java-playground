@@ -34,7 +34,8 @@
             <artifactId>aspectjweaver</artifactId>
             <version>1.9.3</version>
         </dependency>
-<!--        <dependency>
+        <!--
+        <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
             <version>1.9.3</version>
