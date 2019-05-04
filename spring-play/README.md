@@ -1016,7 +1016,7 @@ This play steps
 
   
 
-- Creating Spring bean configuration xml file.
+- Creating Spring bean configuration xml file. Configuring `context:component-scan`, `ViewResolver`.
 
   springmvc.xml
 
