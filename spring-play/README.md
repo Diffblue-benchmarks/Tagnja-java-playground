@@ -18,6 +18,7 @@
     - [spring-aop-by-annotation](#saba)
 - Web Application
   - Spring MVC
+    - [spring-mvc-basic](#smb)
   - REST APIs
 - Working with Data 
   - JdbcTemplate
@@ -926,5 +927,122 @@ This play steps
 [`back to content`](#content)
 
 ---
+
+
+
+### Web Application
+
+<h3 id="smb">Spring MVC Basic</h3>
+
+This play steps
+
+- Creating new maven project.
+
+- Adding dependencies in pom.xml. `spring-context`, `spring-aop`, `spring-web`, `spring-webmvc`.
+
+  pom.xml
+
+  ```xml
+  <properties>        
+  	<spring.version>5.1.5.RELEASE</spring.version>
+  </properties>
+  <dependencies>
+  	<dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-aop</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-web</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-webmvc</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+  </dependencies>
+  ```
+
+- Creating My Controller Java class file with annotation `@Controller`, `@RequestMapping`.
+
+  MyController.java
+
+  ```java
+  @Controller
+  public class MyController
+  {
+      @ResponseBody
+      @RequestMapping("/sayHello")
+      public String sayHello()
+      {
+          return "hello by My Controller!";
+      }
+  
+      @RequestMapping("/indexPage")
+      public String indexPage()
+      {
+          return "index";
+      }
+  }
+  ```
+
+- Configuring web.xml, add Spring MVC DispatcherServlet.
+
+  web.xml
+
+  ```xml
+  <servlet>
+      <servlet-name>DispatcherServlet</servlet-name>
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <init-param> 
+          <param-name>contextConfigLocation</param-name>
+          <param-value>classpath:springmvc.xml</param-value>
+      </init-param>
+      <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>DispatcherServlet</servlet-name>
+      <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  <!-- contextConfigLocation: To specify the springMVC configuration file location. Otherwise, the default configuration file is /WEB-INF/{your servlet name}-servlet.xml -->
+  ```
+
+  
+
+- Creating Spring bean configuration xml file.
+
+  springmvc.xml
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:context="http://www.springframework.org/schema/context"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context.xsd ">
+      <context:component-scan base-package="com.taogen.springmvc" />
+      <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+          <property name="prefix" value="/" />
+          <property name="suffix" value=".jsp" />
+      </bean>
+  </beans>
+  ```
+
+- Running web application on Tomcat.
+
+  Refer spring-ioc-with-servlet-startup.
+
+- Visiting your URL.
+
+  http://localhost:8080/sayHello
+
+  http://localhost:8080/indexPage
 
 --END--
