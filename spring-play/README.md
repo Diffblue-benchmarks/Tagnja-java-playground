@@ -19,12 +19,14 @@
 - Web Application
   - Spring MVC
     - [spring-mvc-basic](#smb)
+    - spring-mvc-data-handle(validation, conversion, returnObject2JSON)
   - REST APIs
 - Working with Data 
   - JdbcTemplate
   - Spring Data JPA
   - Transaction
   - spring-integrate-orm
+- Spring Test
 - Reactive Programming
   - Spring WebFlux
 - Spring Boot
@@ -32,7 +34,6 @@
   - spring-security
 - Spring Integration Spring Batch
 - Spring Deploy with Docker
-- Spring Test
 - Spring Cloud
 
 
@@ -1044,5 +1045,250 @@ This play steps
   http://localhost:8080/sayHello
 
   http://localhost:8080/indexPage
+  
+  
+
+[`back to content`](#content)
+
+---
+
+### Working with Data
+
+
+
+
+[`back to content`](#content)
+
+---
+
+
+
+### Spring Test
+
+<h3 id="stb">Spring Test Basic</h3>
+
+This play steps
+
+- Creating a new maven project.
+
+- Adding dependencies in pom.xml. Dependencies for springmvc `spring-context`, `spring-aop`, `spring-web`, `spring-webmvc`, `javax.servlet-api`. Dependencies for test `spring-test`, `jnit`, `json-path`.
+
+  pom.xml
+
+  ```xml
+  <properties>       
+      <spring.version>5.1.5.RELEASE</spring.version>
+  </properties>
+  <dependencies>
+      <!-- test -->
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-test</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>com.jayway.jsonpath</groupId>
+          <artifactId>json-path</artifactId>
+          <version>2.3.0</version>
+      </dependency>
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.12</version>
+          <scope>test</scope>
+      </dependency>
+  
+      <!-- Spring mvc -->
+      <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>javax.servlet-api</artifactId>
+          <version>3.0.1</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-aop</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-web</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-webmvc</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+  </dependencies>
+  ```
+
+- Configuring web.xml add Spring MVC DispatcherServlet
+
+  web.xml
+
+  ```xml
+  <servlet>
+      <servlet-name>DispatcherServlet</servlet-name>
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <init-param>
+          <param-name>contextConfigLocation</param-name>
+          <param-value>classpath:springmvc.xml</param-value>
+      </init-param>
+      <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>DispatcherServlet</servlet-name>
+      <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  ```
+
+- Creating my Controller
+
+  ```java
+  @Controller
+  public class MyController
+  {
+      @RequestMapping("/sayHello")
+      @ResponseBody
+      public String sayHello()
+      {
+          return "hello by MyController";
+      }
+  
+      @RequestMapping("/toIndex")
+      public String toIndexPage()
+      {
+          return "index";
+      }
+  
+      @RequestMapping(value="/returnJson", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+      @ResponseBody
+      public String returnJson()
+      {
+          return "{message:ok, user: { name : Tom }}";
+      }
+  
+      @RequestMapping(value="/returnJson", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+      @ResponseBody
+      public String returnJsonByPost(String name)
+      {
+          return "{message:ok, user: { name : "+name+"}}";
+      }
+  }
+  ```
+
+- Creating Spring configuration file.
+
+  springmvc.xml
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:context="http://www.springframework.org/schema/context"
+         xmlns:mvc="http://www.springframework.org/schema/mvc"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/mvc  http://www.springframework.org/schema/mvc/spring-mvc.xsd ">
+      <!-- componet scan -->
+      <context:component-scan base-package="com.taogen.springtest" />
+      <!-- view resolver -->
+      <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+          <property name="prefix" value="/" />
+          <property name="suffix" value=".jsp" />
+      </bean>
+      <!-- annotion driven: using json on response body -->
+      <mvc:annotation-driven/>
+  </beans>
+  ```
+
+- Running this web application with Tomcat.
+
+- Creating Controller Test class.
+
+  MyControllerTest.java
+
+  ```java
+  // entry-point to start using Spring Test framework
+  @RunWith(SpringJUnit4ClassRunner.class)
+  // Loading spring context configuration.
+  @ContextConfiguration(locations = "classpath:springmvc.xml") // @ContextConfiguration(class={ApplicationConfig.class})
+  // Loading the web application context. Default path src/main/webapp. You can override by passing value argument.
+  @WebAppConfiguration()
+  public class MyControllerTest
+  {
+      @Autowired
+      private WebApplicationContext wac;
+  
+      private MockMvc mockMvc;
+  
+      @Before
+      public void setup()
+      {
+          this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+      }
+  
+      @Test
+      public void verifyContext() {
+          ServletContext servletContext = wac.getServletContext();
+  
+          Assert.assertNotNull(servletContext);
+          Assert.assertTrue(servletContext instanceof MockServletContext);
+          Assert.assertNotNull(wac.getBean("myController"));
+      }
+  
+      @Test
+      public void testViewName() throws Exception
+      {
+          this.mockMvc.perform(get("/toIndex")).andDo(print())
+                  .andExpect(view().name("index"))
+                  .andExpect(forwardedUrl("/index.jsp"));
+      }
+      
+      @Test
+      public void testResponseBody() throws Exception {
+          MvcResult mvcResult = this.mockMvc.perform(get("/returnJson")).andDo(print())
+                  .andExpect(status().isOk())
+                  .andExpect(jsonPath("$.message").value("ok"))
+                  .andExpect(jsonPath("$.user.name").value("Tom"))
+                  .andReturn();
+          Assert.assertEquals("application/json;charset=UTF-8", mvcResult.getResponse().getContentType());
+      }
+      
+      @Test
+      public void testPostRequest() throws Exception {
+          this.mockMvc.perform(post("/returnJson").param("name", "Tom1")).andDo(print())
+                  .andExpect(status().isOk())
+                  .andExpect(content().contentType("application/json;charset=UTF-8"))
+                  .andExpect(jsonPath("$.message").value("ok"))
+                  .andExpect(content().string(containsString("Tom1")));
+      }
+      
+      /*
+      All Expects
+          status().isOk()
+          status().isFound() //302 
+          flash().attributeExists("page_error")
+          view().name("index")
+          forwardedUrl("/index.jsp")
+          content().contentType("application/json;charset=UTF-8")
+          content().string(containsString("Tom1"))
+          jsonPath("$.message").value("ok")
+          model().attribute("signupForm", any(SignupForm.class))
+          model().attributeHasFieldErrors("signupForm", "email")
+      */
+  }
+  ```
+
+[`back to content`](#content)
+
+---
+
+
 
 --END--
