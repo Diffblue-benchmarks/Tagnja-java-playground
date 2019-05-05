@@ -27,6 +27,7 @@
   - Transaction
   - spring-integrate-orm
 - Spring Test
+  - [spring-test-basic](#stb)
 - Reactive Programming
   - Spring WebFlux
 - Spring Boot
