@@ -19,7 +19,10 @@
 - Web Application
   - Spring MVC
     - [spring-mvc-basic](#smb)
-    - spring-mvc-data-handle(validation, conversion, returnObject2JSON)
+    - [spring-mvc-data-validation](#smdv)
+    - spring-mvc-data-formatter
+    - spring-mvc-type-conversion
+    - spring-mvc-return-object2json
   - REST APIs
 - Working with Data 
   - JdbcTemplate
@@ -1048,6 +1051,104 @@ This play steps
   http://localhost:8080/indexPage
   
   
+
+[`back to content`](#content)
+
+---
+
+
+
+<h3 id="smdh">Spring MVC Data Validation</h3>
+
+Data Validation. Validating field if has error forward to form page and display error message.
+
+This Play Steps.
+
+- Creating new Maven project. 
+
+- Adding dependencies in pom.xml. `spring-context`, `spring-web`, `spring-webmvc`, `javax.validation`
+
+- Creating Entity Java Class.
+
+  User.java
+
+  ```java
+  public class User
+  {
+      @NotNull
+      @Min(1)
+      private Integer id;
+  
+      @NotNull
+      @Size(min=2, max=30)
+      private String name;
+  
+      @NotNull
+      @Range(min=1, max=150)
+      private Integer age;
+  
+      @NotNull
+      private String address;
+      //... Constructor, getter, setter
+  }
+  ```
+
+- Creating Controller Java Class.
+
+  MyController.java
+
+  ```java
+  @RequestMapping(value="/postUser")
+  public String postUser(@Valid User user)
+  {
+      return user.toString();
+  }
+  ```
+
+- Configuring web.xml add Spring DispatcherServlet
+
+  web.xml
+
+  ```xml
+  <servlet>
+      <servlet-name>DispatcherServlet</servlet-name>
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  </servlet> 
+  <servlet-mapping>
+      <servlet-name>DispatcherServlet</servlet-name>
+      <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  ```
+
+- Creating Spring Configuration xml file.
+
+  springmvc.xml
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:context="http://www.springframework.org/schema/context"
+         xmlns:mvc="http://www.springframework.org/schema/mvc"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context.xsd
+          http://www.springframework.org/schema/mvc  http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+      <context:component-scan base-package="com.taogen.springmvcdatahandle" />
+      <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+          <property name="prefix" value="/"/>
+          <property name="suffix" value=".jsp" />
+      </bean>
+      <mvc:annotation-driven ></mvc:annotation-driven>
+      <bean class="org.springframework.context.support.ResourceBundleMessageSource"
+            id="messageSource">
+          <property name="basename" value="messages" />
+      </bean>
+  </beans>
+  ```
+
+- Running this web application with Tomcat.
+
+- Visiting your form page. Submit form.
 
 [`back to content`](#content)
 
