@@ -27,7 +27,7 @@ public class UserServlet extends HttpServlet
         String localeStr = req.getParameter("locale");
         req.setAttribute("locale", localeStr);
         Locale locale = LocaleUtils.getLocaleByStr(LocaleUtils.getRightLocaleStr(localeStr));
-
+        System.out.println("servlet path:" + req.getServletPath());
         if (uri.contains("getAll"))
         {
             //writer.write(UserCache.getList().toString());
