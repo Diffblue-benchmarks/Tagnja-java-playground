@@ -37,9 +37,8 @@ public class UserCache
         {
             int i = 0;
             for (; i < userList.size(); i++) {
-                if (userId.intValue() == userList.get(i).getId().intValue());
+                if (userId.equals(userList.get(i).getId()))
                 {
-                    System.out.println("userId:" + userId +", index i: "+ i + ", userList(i).id: " + userList.get(i).getId());
                     break;
                 }
             }

@@ -13,6 +13,7 @@
 <body>
 
     <h2><fmt:message key="user.userManagement" /></h2>
+    <hr><br>
 
     <!-- select Languages -->
     <div style="float:right;position: absolute; top:10px; right: 30px;">
@@ -35,6 +36,7 @@
     <br/>
 
     <!-- list table -->
+    <h3><fmt:message key="user.list" /></h3>
     <table border="1" >
         <tr>
             <th width="150px"><fmt:message key="user.id" /></th>
