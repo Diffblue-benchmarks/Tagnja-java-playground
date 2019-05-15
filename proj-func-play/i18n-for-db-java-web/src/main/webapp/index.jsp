@@ -23,14 +23,17 @@
 
     <!-- Add from -->
     <form action="/add">
-        id: <input name="id"/>  name: <input name="name"/> <input type="hidden" name="locale" value="${locale}"/>
+        <fmt:message key="user.id" />: <input name="id"/>
+        <fmt:message key="user.name" />: <input name="name"/>
+        <input type="hidden" name="locale" value="${locale}"/>
         <input type="submit" value="<fmt:message key="user.add" />" />
     </form>
     <br/>
 
     <!-- remove form -->
     <form action="/remove">
-        id: <input name="userId"/>  <input type="hidden" name="locale" value="${locale}"/>
+        <fmt:message key="user.id" />: <input name="userId"/>
+        <input type="hidden" name="locale" value="${locale}"/>
         <input type="submit" value="<fmt:message key="user.remove" />" />
     </form>
     <br/>
