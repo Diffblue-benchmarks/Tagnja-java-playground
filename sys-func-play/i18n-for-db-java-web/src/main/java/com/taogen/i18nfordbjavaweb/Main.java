@@ -40,7 +40,28 @@ public class Main
 //        System.out.println(UserCache.remove(3));
 //        System.out.println(UserCache.remove(2));
 //        System.out.println(UserCache.getList());
+        long beginTime = System.currentTimeMillis();
         System.out.println(I18nUtils.getMessage("errorCode.success", new Locale("zh", "CN")));
+        System.out.println(System.currentTimeMillis() - beginTime);
 
+        long beginTime2 = System.currentTimeMillis();
+        System.out.println(I18nUtils.getMessage("errorCode.success", new Locale("en")));
+        System.out.println(System.currentTimeMillis() - beginTime2);
+
+        long beginTime3 = System.currentTimeMillis();
+        System.out.println(I18nUtils.getMessage("errorCode.success", new Locale("zh", "CN")));
+        System.out.println(System.currentTimeMillis() - beginTime3);
+
+        long beginTime4 = System.currentTimeMillis();
+        System.out.println(I18nUtils.getMessage("user.add", new Locale("en")));
+        System.out.println(System.currentTimeMillis() - beginTime4);
+
+        long beginTime5 = System.currentTimeMillis();
+        System.out.println(I18nUtils.getMessage("errorCode.success", new Locale("en")));
+        System.out.println(System.currentTimeMillis() - beginTime5);
+
+        long beginTime6 = System.currentTimeMillis();
+        System.out.println(I18nUtils.getMessage("user.add", new Locale("zh")));
+        System.out.println(System.currentTimeMillis() - beginTime6);
     }
 }

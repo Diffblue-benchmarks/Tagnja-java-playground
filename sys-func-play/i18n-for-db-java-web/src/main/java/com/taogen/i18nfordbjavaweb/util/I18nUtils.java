@@ -10,8 +10,50 @@ public class I18nUtils
 	private static final String DIRECTORY_PATH = "i18n";
 	//local
 //	private static final String DIRECTORY_PATH = "src/i18n";
-	
-	private static List<ResourceBundle> load(Locale locale) 
+
+//    private static final List<Locale> localeList = new ArrayList<>(Arrays.asList(
+//        new Locale("en"), new Locale("zh"), new Locale("zh", "CN")));
+//    private static List<ResourceBundle> bundleList = new ArrayList<>();
+//    static
+//    {
+//        // web
+//        String path = null;
+//        path = I18nUtils.class.getClassLoader().getResource(DIRECTORY_PATH).getPath();
+//        File dir = new File(path);
+//        // local
+////		File dir = new File(DIRECTORY_PATH);
+//        if (dir.exists())
+//        {
+//            Set<String> baseNameSet = new HashSet<>();
+//            File[] files = dir.listFiles();
+//            for (File f : files)
+//            {
+//                String fileName = f.getName();
+//                int index = fileName.lastIndexOf("_");
+//                if (index != -1)
+//                {
+//                    continue;
+//                }
+//                index = fileName.indexOf(".");
+//                String baseName = PACKAGE_PATH + "." + fileName.substring(0, index);
+//                baseNameSet.add(baseName);
+//            }
+//
+//            for (String baseName : baseNameSet)
+//            {
+//                ResourceBundle bundle;
+//                try {
+//                    bundle = ResourceBundle.getBundle(baseName, new Locale("zh"));
+//                    bundleList.add(bundle);
+//                } catch (MissingResourceException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        }
+//    }
+
+	private static List<ResourceBundle> load(Locale locale)
 	{
 		List<ResourceBundle> bundleList = new ArrayList<>();
 		// web
@@ -20,7 +62,7 @@ public class I18nUtils
 		File dir = new File(path);
 		// local
 //		File dir = new File(DIRECTORY_PATH);
-		
+
 		if (dir.exists())
 		{
 			Set<String> baseNameSet = new HashSet<>();
@@ -37,7 +79,7 @@ public class I18nUtils
 				String baseName = PACKAGE_PATH + "." + fileName.substring(0, index);
 				baseNameSet.add(baseName);
 			}
-			
+
 			for (String baseName : baseNameSet)
 			{
 				ResourceBundle bundle;
