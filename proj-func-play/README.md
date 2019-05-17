@@ -22,6 +22,7 @@
   - Text Translation
     - GUI Text
       - Language Switch.
+      - Cookie for user language.
     - Database Data
 - Multiple Server
   - Application Server
