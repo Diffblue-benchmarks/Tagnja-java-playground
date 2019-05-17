@@ -14,7 +14,20 @@
 
 <h3 id="ifdjw">i18n For  DB, Java And Web</h3>
 
-i18n Functions
+**i18n Solution Scheme**
+
+- System
+  - Static resource. Such as Picture.
+  - Format of Time, Number, Currency.
+  - Text Translation
+    - GUI Text
+      - Language Switch.
+    - Database Data
+- Multiple Server
+  - Application Server
+  - Database Server
+- Area Culture. 
+  - Law. culture.
 
 ##### 1.i18n for web page field.
 
