@@ -2,7 +2,6 @@ package com.taogen.i18nfordbjavaweb.DAO;
 
 import com.taogen.i18nfordbjavaweb.entity.User;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
