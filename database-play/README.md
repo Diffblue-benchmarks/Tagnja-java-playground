@@ -8,12 +8,15 @@
   - jdbc-basic
   - java-redis-client-library-jedis
   - java-driver-for-mongodb
+  - create-database-tables-by-java
 - Connection Pool
   - apache dbcp
   - druid
 - Java ORM
   - hibernate
+    - hibernate-generator
   - mybatis
+    - mybatis-generator
   - paoding-rose-jade
 - Java NoSQL
   - MongoDB
