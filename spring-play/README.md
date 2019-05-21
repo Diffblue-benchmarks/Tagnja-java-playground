@@ -4,7 +4,7 @@
 
 <h3 id="content">Content</h3>
 
-- About Dependency
+- [About Dependency](#ady)
 - Spring Core
   - Spring IOC
     - [spring-ioc-by-xml](#sibx)
@@ -46,7 +46,7 @@
 
 ### Main
 
-### About Dependency
+<h3 id="ady">About Dependency</h3>
 
 Description of modules
 
@@ -55,8 +55,9 @@ Description of modules
 Usage
 
 - the `spring-context` dependency contains `spring-beans` , `spring-core `. Just add the one dependency in your `pom.xml` when you using IOC.
-
 - the `spring-web` dependency when you are developing a web application.
+
+[`back to content`](#content)
 
 ### Spring IOC
 <h3 id="sibx">Spring IOC by xml</h3>
