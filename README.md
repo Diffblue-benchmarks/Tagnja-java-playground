@@ -41,8 +41,10 @@ Here is my Java practice codes.
 - Others
   - business-play (Typical system)
     - Shop System (shopping cart)
-  - proj-func-play
+  - sys-func-play
     - i18n
+    - table paging display and search
+    - form validate and components
     - logging management
     - file management
     - user login authentication and authorization
