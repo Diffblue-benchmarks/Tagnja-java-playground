@@ -156,27 +156,39 @@ phases:
       # Set an upper bound on loop unwinding.
       unwind: 6
 units:
-# Target TGF: 99.0
-#  >methods=2
-#  >complexity=22
-#  >construction=9.0
-#  >dependency=0.5
- - target:
-   - dir: spring-play/spring-ioc-by-annotation/target/classes
-     file: com/taogen/springiocbyannotation/Main.class
-     sourceDir: spring-play/spring-ioc-by-annotation/src/main/java
-     sourceFile: com/taogen/springiocbyannotation/Main.java
-   - dir: spring-play/spring-ioc-by-annotation/target/classes
-     file: com/taogen/springiocbyannotation/MyBean.class
-     sourceDir: spring-play/spring-ioc-by-annotation/src/main/java
-     sourceFile: com/taogen/springiocbyannotation/MyBean.java
-# Target TGF: 14.0
-#  >methods=3
-#  >complexity=14
-#  >construction=1.0
-#  >dependency=1.0
- - target:
-   - dir: spring-play/spring-ioc-by-annotation/target/classes
-     file: com/taogen/springiocbyannotation/MyBean.class
-     sourceDir: spring-play/spring-ioc-by-annotation/src/main/java
-     sourceFile: com/taogen/springiocbyannotation/MyBean.java
+  # Target Coverage: Unknown %
+  - target:
+    - dir: sys-func-play/i18n-for-db-java-web/target/classes
+      file: com/taogen/i18nfordbjavaweb/util/StringUtils.class
+      sourceDir: sys-func-play/i18n-for-db-java-web/src/main/java
+      sourceFile: com/taogen/i18nfordbjavaweb/util/StringUtils.java
+  # Target Coverage: Unknown %
+  - target:
+    - dir: sys-func-play/i18n-for-db-java-web/target/classes
+      file: com/taogen/i18nfordbjavaweb/util/LocaleUtils.class
+      sourceDir: sys-func-play/i18n-for-db-java-web/src/main/java
+      sourceFile: com/taogen/i18nfordbjavaweb/util/LocaleUtils.java
+    # Child of LocaleUtils.class
+    # Child Coverage: Unknown %
+    - dir: sys-func-play/i18n-for-db-java-web/target/classes
+      file: com/taogen/i18nfordbjavaweb/util/HttpHeader.class
+      sourceDir: sys-func-play/i18n-for-db-java-web/src/main/java
+      sourceFile: com/taogen/i18nfordbjavaweb/util/HttpHeader.java
+    # Child of LocaleUtils.class
+    # Child Coverage: Unknown %
+    - dir: sys-func-play/i18n-for-db-java-web/target/classes
+      file: com/taogen/i18nfordbjavaweb/util/StringUtils.class
+      sourceDir: sys-func-play/i18n-for-db-java-web/src/main/java
+      sourceFile: com/taogen/i18nfordbjavaweb/util/StringUtils.java
+    # Child of LocaleUtils.class
+    # Child Coverage: Unknown %
+    - dir: sys-func-play/i18n-for-db-java-web/target/classes
+      file: com/taogen/i18nfordbjavaweb/util/LocaleType.class
+      sourceDir: sys-func-play/i18n-for-db-java-web/src/main/java
+      sourceFile: com/taogen/i18nfordbjavaweb/util/LocaleType.java
+        # Target Coverage: Unknown %
+  - target:
+    - dir: sys-func-play/i18n-for-db-java-web/target/classes
+      file: com/taogen/i18nfordbjavaweb/util/I18nUtils.class
+      sourceDir: sys-func-play/i18n-for-db-java-web/src/main/java
+      sourceFile: com/taogen/i18nfordbjavaweb/util/I18nUtils.java
